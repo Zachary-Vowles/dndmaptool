@@ -1,0 +1,95 @@
+{
+"Ruins": {
+"modules": [
+"Abandoned Sanctuary", "Bandit Forest", "Barbican", "Bath House",
+"Castle Armory", "Destroyed Tower", "End Wall", "Fallen Forest",
+"Fallen Hallways", "Fallen Halls", "Fallen Pass", "Fallen Rooms",
+"Fallen Warrens", "Forest A", "Forest B", "Forest Path",
+"Forgotten Fields", "Forgotten Forest", "Forgotten Glades",
+"Forgotten Passage", "Forgotten Plots", "Graveyard", "Greathall A",
+"Greathall B", "Greathall C", "Hidden Altar", "Keep", "Outer Cemetery",
+"Refectory", "Slime Forest", "Square A", "Square B", "Stables",
+"Stones", "Tower Bridge", "Watchtower", "Watering Hole", "Well", "Wolf Den"
+],
+"targets": {
+"Herbs of Interest": ["Fallen Forest", "Slime Forest", "Square B", "Well"],
+"Ores of Interest": ["Bandit Forest", "Slime Forest", "Square A", "Watering Hole"]
+}
+},
+"Crypts": {
+"modules": [
+"Admirer's Room", "Altar Room", "Armory", "Atrium", "Barracks",
+"Blindfall Pit", "Broken Bridge", "Cage", "Catacomb", "Cemetery",
+"Center Altar", "Center Bridge", "Chapel", "Circular", "Cistern",
+"Cliffs", "Coffin Rooms", "Corridors", "Cross Road", "Crypt Dungeons",
+"Dark Magic Library", "Dark Priests", "Death Hall", "Fishing Grounds",
+"Four Rooms", "Gated Rooms", "Guard Posts", "Hall E", "Hallways",
+"High Priests", "Lightless Chamber", "Lightless Tomb", "Long Bridge",
+"Mad Corridors", "Maze", "Mimic Lair", "Mini Wheel", "Mummy Chest",
+"Old Tomb", "Pit", "Prisons B", "Pyramid", "Ramparts", "Ritual Room",
+"Sanctum", "Sewers", "Skeleton Rooms", "Storeroom", "Swamp",
+"The Great Walkway", "Tombs", "Torchbound Vault", "Trap Hall A",
+"Trap Hall B", "Treasure Room", "Twin Cemeteries", "Underground Altar",
+"Vault", "Wheel", "Wraith Lair"
+],
+"targets": {
+"Modules of Interest": [
+"Admirer's Room", "Altar Room", "Catacomb", "Center Bridge", "Cliffs",
+"Coffin Rooms", "Cross Road", "Dark Priests", "Fishing Grounds",
+"High Priests", "Long Bridge", "Maze", "Prisons B", "Pyramid",
+"Sanctum", "Sewers", "Trap Hall B", "Underground Altar", "Wheel", "Wraith Lair"
+]
+}
+},
+"Goblin Caves": {
+"modules": [
+"Ants Nest", "Cave Altar A", "Cave Altar B", "Cave Hideout A",
+"Cave Hideout B", "Cave Pit Hall", "Cave Tombs", "Cave Tunnels",
+"Cavern Lake A", "Cavern Lake B", "Goblin Bandits", "Goblin Maze A",
+"Goblin Maze B", "Goblin Mine", "Goblin Prisons A", "Goblin Prisons B",
+"Goblin Rooms", "Goblin Town A", "Goblin Town B", "Mole Tunnel",
+"Spider Cave", "Spider Nest", "Stone Graves A", "Stone Graves B",
+"Valley A", "Valley B"
+],
+"targets": {
+"Herbs of Interest": [
+"Ants Nest", "Cave Altar B", "Cave Hideout B", "Cave Tunnels",
+"Cavern Lake A", "Goblin Town B", "Goblin Maze A", "Spider Cave",
+"Spider Nest", "Stone Graves B"
+],
+"Ores of Interest": [
+"Cave Altar B", "Cave Pit Hall", "Goblin Mine", "Goblin Town B",
+"Mole Tunnel", "Spider Cave", "Stone Graves B"
+]
+}
+},
+"Firedeep": {
+"modules": [
+"Anvil Outpost", "Blaze Tunnel", "Broken Stone Bridge", "Burning Court",
+"Burning Pond", "Collapsed Dig Site", "Dripstone Hollow", "Dwarven Great Hall",
+"Dwarven Lockway", "Emberflow", "Fallen Rampart", "Flame Terrace",
+"Forge", "High Causeway", "Lava Crossway", "Magma Falls", "Mining Passage",
+"Molten Pit", "Molten Quarter", "Molten Valley", "Scorched Range",
+"Sinkhole", "Sinking Plaza", "Stonepillar Hall", "Sundered Passage"
+],
+"targets": {
+"Modules of Interest": ["Anvil Outpost", "Blaze Tunnel", "Molten Pit"]
+}
+},
+"Inferno": {
+"modules": [
+"Brimstone Castle", "Brimstone Falls", "Brimstone Prison", "Death Altar",
+"Demon Gate", "Demon Mouth", "Demon Stairs", "Doom Cage", "Hellcross Bridge",
+"Judgement Road", "Painful Steps", "Waiting Room", "Bat Roost",
+"Brimstone Bridge", "Brimstone Columns", "Brimstone Platforms",
+"Brimstone River", "Demon Den", "Demon Lairs", "Demon Overseer's Dominion",
+"Demon Throne", "Drain", "Hellwind", "Obelisk", "Ritual Rooms"
+],
+"targets": {
+"Modules of Interest": [
+"Brimstone Castle", "Demon Throne", "Demon Gate", "Death Altar",
+"Demon Mouth", "Waiting Room", "Brimstone River", "Ritual Rooms"
+]
+}
+}
+}
