@@ -10,12 +10,9 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def load_data():
-    """Loads map theme whitelist and point-of-interest targets from map_data.json."""
     with open("map_data.json", "r") as f:
         return json.load(f)
-
 
 def main():
     st.set_page_config(page_title="Map Helper", layout="wide")
@@ -86,7 +83,7 @@ def main():
                     base_targets = targets[selected_category]
                     actual_targets = []
                     for node in mapped_modules.keys():
-                        base_name = node.split(" (")[0]  # Strips the " (2)" off if present
+                        base_name = node.split(" (")[0] # Strips the " (2)" off if it exists
                         if base_name in base_targets:
                             actual_targets.append(node)
                     
@@ -101,18 +98,16 @@ def main():
                     tab1, tab2, tab3 = st.tabs(["Direct Route (Ignores Walls)", "Smart Route (Avoids Walls)", "Debug View"])
                     
                     with tab1:
-                        st.image(
-                            cv2.cvtColor(direct_img, cv2.COLOR_BGR2RGB), 
-                            caption=f"Direct shortest path: {' -> '.join(direct_route)}", 
-                            width="stretch"
-                        )
+                        st.markdown("### 🗺️ Route Legend")
+                        st.markdown("🔵 **Target Module** &nbsp; | &nbsp; 🔴 **Intermediate Path Node** &nbsp; | &nbsp; 🟡 **Calculated Route**")
+                        st.markdown(f"**Path Order:** `{' -> '.join(direct_route)}`")
+                        st.image(cv2.cvtColor(direct_img, cv2.COLOR_BGR2RGB), width="stretch")
                     
                     with tab2:
-                        st.image(
-                            cv2.cvtColor(smart_img, cv2.COLOR_BGR2RGB), 
-                            caption=f"Path avoiding dark walls: {' -> '.join(smart_route)}", 
-                            width="stretch"
-                        )
+                        st.markdown("### 🗺️ Route Legend")
+                        st.markdown("🔵 **Target Module** &nbsp; | &nbsp; 🔴 **Intermediate Path Node** &nbsp; | &nbsp; 🟡 **Calculated Route**")
+                        st.markdown(f"**Path Order:** `{' -> '.join(smart_route)}`")
+                        st.image(cv2.cvtColor(smart_img, cv2.COLOR_BGR2RGB), width="stretch")
                         
                     with tab3:
                         if debug_mode:
@@ -120,11 +115,7 @@ def main():
                             st.write(", ".join(sorted(mapped_modules.keys())))
                             
                             debug_graph = cv_processor.draw_debug_graph(cropped_img, mapped_modules, all_edges, valid_edges)
-                            st.image(
-                                cv2.cvtColor(debug_graph, cv2.COLOR_BGR2RGB), 
-                                caption="Green = Open Path, Red = Blocked/Diagonal", 
-                                width="stretch"
-                            )
+                            st.image(cv2.cvtColor(debug_graph, cv2.COLOR_BGR2RGB), caption="Green = Open Path, Red = Blocked/Diagonal", width="stretch")
                         else:
                             st.info("Check 'Enable Debug Mode' in the sidebar to see the internal graph topography.")
 
@@ -134,7 +125,6 @@ def main():
             st.image(image_pil, caption="Uploaded Screenshot", width="stretch")
     else:
         st.info("Please upload a map screenshot using the sidebar to begin.")
-
 
 if __name__ == "__main__":
     main()
