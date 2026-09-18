@@ -10,9 +10,12 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def load_data():
+    """Loads map theme whitelist and point-of-interest targets from map_data.json."""
     with open("map_data.json", "r") as f:
         return json.load(f)
+
 
 def main():
     st.set_page_config(page_title="Map Helper", layout="wide")
@@ -78,37 +81,60 @@ def main():
                     G_direct = pathfinder.build_map_graph(mapped_modules, all_edges)
                     
                     start_node = pathfinder.find_nearest_node_to_player(G_smart, player_coords)
-                    target_nodes = targets[selected_category]
                     
-                    smart_route = pathfinder.calculate_optimal_route(G_smart, start_node, target_nodes)
-                    direct_route = pathfinder.calculate_optimal_route(G_direct, start_node, target_nodes)
+                    # Resolve Target Nodes (including duplicates like "Fallen Forest (2)")
+                    base_targets = targets[selected_category]
+                    actual_targets = []
+                    for node in mapped_modules.keys():
+                        base_name = node.split(" (")[0]  # Strips the " (2)" off if present
+                        if base_name in base_targets:
+                            actual_targets.append(node)
+                    
+                    smart_route = pathfinder.calculate_optimal_route(G_smart, start_node, actual_targets)
+                    direct_route = pathfinder.calculate_optimal_route(G_direct, start_node, actual_targets)
 
                     # 6. Drawing
-                    smart_img = cv_processor.draw_route_on_image(image_np, crop_box, mapped_modules, smart_route)
-                    direct_img = cv_processor.draw_route_on_image(image_np, crop_box, mapped_modules, direct_route)
+                    smart_img = cv_processor.draw_route_on_image(image_np, crop_box, mapped_modules, smart_route, actual_targets)
+                    direct_img = cv_processor.draw_route_on_image(image_np, crop_box, mapped_modules, direct_route, actual_targets)
                     
                     # 7. Render UI Tabs
-                    tab1, tab2, tab3 = st.tabs(["Smart Route (Avoids Walls)", "Direct Route (Ignores Walls)", "Debug View"])
+                    tab1, tab2, tab3 = st.tabs(["Direct Route (Ignores Walls)", "Smart Route (Avoids Walls)", "Debug View"])
                     
                     with tab1:
-                        st.image(cv2.cvtColor(smart_img, cv2.COLOR_BGR2RGB), caption=f"Path avoiding dark walls: {' -> '.join(smart_route)}", use_container_width=True)
+                        st.image(
+                            cv2.cvtColor(direct_img, cv2.COLOR_BGR2RGB), 
+                            caption=f"Direct shortest path: {' -> '.join(direct_route)}", 
+                            width="stretch"
+                        )
                     
                     with tab2:
-                        st.image(cv2.cvtColor(direct_img, cv2.COLOR_BGR2RGB), caption=f"Direct shortest path: {' -> '.join(direct_route)}", use_container_width=True)
+                        st.image(
+                            cv2.cvtColor(smart_img, cv2.COLOR_BGR2RGB), 
+                            caption=f"Path avoiding dark walls: {' -> '.join(smart_route)}", 
+                            width="stretch"
+                        )
                         
                     with tab3:
                         if debug_mode:
+                            st.write("### Detected Modules List:")
+                            st.write(", ".join(sorted(mapped_modules.keys())))
+                            
                             debug_graph = cv_processor.draw_debug_graph(cropped_img, mapped_modules, all_edges, valid_edges)
-                            st.image(cv2.cvtColor(debug_graph, cv2.COLOR_BGR2RGB), caption="Green = Open Path, Red = Blocked Wall", use_container_width=True)
+                            st.image(
+                                cv2.cvtColor(debug_graph, cv2.COLOR_BGR2RGB), 
+                                caption="Green = Open Path, Red = Blocked/Diagonal", 
+                                width="stretch"
+                            )
                         else:
                             st.info("Check 'Enable Debug Mode' in the sidebar to see the internal graph topography.")
 
                 except Exception as e:
                     st.error(f"An error occurred during processing: {e}")
         else:
-            st.image(image_pil, caption="Uploaded Screenshot", use_container_width=True)
+            st.image(image_pil, caption="Uploaded Screenshot", width="stretch")
     else:
         st.info("Please upload a map screenshot using the sidebar to begin.")
+
 
 if __name__ == "__main__":
     main()

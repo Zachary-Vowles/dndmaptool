@@ -1,12 +1,16 @@
 import networkx as nx
 import logging
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def build_map_graph(mapped_modules: Dict[str, Tuple[int, int]], edges: List[Tuple[str, str]]) -> nx.Graph:
-    """Constructs a NetworkX graph from the extracted map data."""
+
+def build_map_graph(
+    mapped_modules: Dict[str, Tuple[int, int]], 
+    edges: List[Tuple[str, str]]
+) -> nx.Graph:
+    """Constructs an undirected NetworkX graph from module nodes and valid edge pairs."""
     logger.info("Building NetworkX graph from map data...")
     G = nx.Graph()
     
@@ -20,8 +24,12 @@ def build_map_graph(mapped_modules: Dict[str, Tuple[int, int]], edges: List[Tupl
     logger.info(f"Graph built with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges.")
     return G
 
-def find_nearest_node_to_player(G: nx.Graph, player_coords: Tuple[int, int]) -> str | None:
-    """Finds the map node closest to the player's physical coordinates."""
+
+def find_nearest_node_to_player(
+    G: nx.Graph, 
+    player_coords: Tuple[int, int]
+) -> Optional[str]:
+    """Finds the map node closest in Euclidean pixel distance to the player's physical coordinates."""
     if not G.nodes:
         return None
         
@@ -39,8 +47,16 @@ def find_nearest_node_to_player(G: nx.Graph, player_coords: Tuple[int, int]) -> 
                 
     return closest_node
 
-def calculate_optimal_route(G: nx.Graph, start_node: str, target_nodes: List[str]) -> List[str]:
-    """Calculates a greedy nearest-neighbor route visiting target nodes."""
+
+def calculate_optimal_route(
+    G: nx.Graph, 
+    start_node: str, 
+    target_nodes: List[str]
+) -> List[str]:
+    """
+    Calculates a greedy nearest-neighbor route visiting target nodes.
+    Removes any intermediate targets visited along the journey to prevent redundant backtracking.
+    """
     logger.info(f"Calculating route from '{start_node}' to targets: {target_nodes}")
     
     valid_targets = [t for t in target_nodes if t in G]
@@ -71,12 +87,18 @@ def calculate_optimal_route(G: nx.Graph, start_node: str, target_nodes: List[str
                 pass
                 
         if closest_target is None:
+            logger.warning("Could not reach any remaining targets. Ending route calculation early.")
             break
             
         if len(best_path_segment) > 1:
             full_path.extend(best_path_segment[1:])
             
+        # Remove any target nodes that were crossed along this segment so we don't backtrack
+        for node in best_path_segment:
+            if node in remaining_targets:
+                remaining_targets.remove(node)
+                
         current_node = closest_target
-        remaining_targets.remove(closest_target)
         
+    logger.info(f"Route calculated successfully: {' -> '.join(full_path)}")
     return full_path
